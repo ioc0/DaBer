@@ -1,0 +1,19 @@
+﻿<Window x:Class="DayutBeri.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DayutBeri"
+        mc:Ignorable="d"
+        WindowStyle="None" WindowState="Maximized" WindowStartupLocation="CenterOwner"
+        Title="MainWindow" Height="661.63" Width="658.091" TextInput="textInputed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="91*"/>
+            <RowDefinition Height="237*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Name ="rectangle" Fill="#FFF4F4F5" Margin="155,143,155,155.2" Grid.RowSpan="2"/>
+        <Label x:Name="ticketCount" Content="Количество электронных билетов: " Margin="155,10,33,0" Height="54" VerticalAlignment="Top" FontSize="26"/>
+
+    </Grid>
+</Window>
