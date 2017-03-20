@@ -22,6 +22,7 @@ namespace DayutBeri
     public partial class MainWindow : Window
     {
         public int tick = 0;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -29,17 +30,27 @@ namespace DayutBeri
 
         private void textInputed(object sender, TextCompositionEventArgs e)
         {
+            
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 11; i++)
+            {
+                sb.Append(e.Text);
+                i++;
+            }
+            string s = sb.ToString();
+            MessageBox.Show(s);
+
             if (e.Text == "q")
             {
-                this.Close();
+                Close();
             }
-            if (e.Text == "a")
+            if (e.Text == "1023676281")
             {
                 rectangle.Fill = new SolidColorBrush(Colors.Green);
                 tick++;
-                ticketCount.Content = "Количество электронных билетов: "+ tick.ToString();
+                //ticketCount.Content = "Количество электронных билетов: "+ tick.ToString();
             }
-            if (e.Text == "b")
+            if (e.Text == "9785496007405")
             {
                 rectangle.Fill = new SolidColorBrush(Colors.Red);
 
