@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 
+
 namespace DayutBeri
 {
     /// <summary>
@@ -21,40 +22,60 @@ namespace DayutBeri
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int tick = 0;
-        
+        StringBuilder sb = new StringBuilder();
+        int marker = 0;
         public MainWindow()
         {
-            InitializeComponent();
+            
         }
 
-        private void textInputed(object sender, TextCompositionEventArgs e)
+        protected void textInputed(object sender, TextCompositionEventArgs e)
         {
+          
             
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 11; i++)
-            {
-                sb.Append(e.Text);
-                i++;
-            }
-            string s = sb.ToString();
-            MessageBox.Show(s);
 
-            if (e.Text == "q")
+
+        }
+        
+
+        private void _enterPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+
+                if (passwordBox.Password == "4606453849072") {
+                    rectangle.Fill = new SolidColorBrush(Colors.DarkGreen);
+                    passwordBox.Password = "";
+                    marker++;
+                    ticketCount.Content = "Количество электронных билетов:" + marker;
+                    PassYes.Opacity = 100;
+                    PassYes.Content = "Проезд разрешен";
+                }
+                else
+                {
+                    rectangle.Fill = new SolidColorBrush(Colors.DarkRed);
+                    PassYes.Opacity = 100;
+                    PassYes.Content = "Проезд Запрещен";
+                    passwordBox.Password = "";
+                }
+                
+               
+            }
+            if (e.Key == Key.Escape)
             {
                 Close();
             }
-            if (e.Text == "1023676281")
-            {
-                rectangle.Fill = new SolidColorBrush(Colors.Green);
-                tick++;
-                //ticketCount.Content = "Количество электронных билетов: "+ tick.ToString();
-            }
-            if (e.Text == "9785496007405")
-            {
-                rectangle.Fill = new SolidColorBrush(Colors.Red);
+        }
 
+        private void onLoad(object sender, RoutedEventArgs e)
+        {
+            List<int> passwords = new List<int>();
+                for (int i = 0; i < 1000; i++)
+            {
+                passwords.Add(i);
             }
+            PassYes.Opacity = 0;
+            passwordBox.Focus();
         }
     }
 }
