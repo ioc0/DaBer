@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Net.NetworkInformation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -22,8 +23,13 @@ namespace DayutBeri
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool isBarCorrect = false;
         StringBuilder sb = new StringBuilder();
+        List<int> passList = new List<int>();
         int marker = 0;
+        static int connectionStatus = 0;
+        bool pingable = false;
+
         public MainWindow()
         {
             
@@ -42,14 +48,17 @@ namespace DayutBeri
         {
             if (e.Key == Key.Enter)
             {
-
-                if (passwordBox.Password == "4606453849072") {
-                    rectangle.Fill = new SolidColorBrush(Colors.DarkGreen);
+                checker();
+                //Оттестировать почему нет перехода состояния.
+                //if (passwordBox.Password == "4606453849072") {
+                if (isBarCorrect) { 
+                rectangle.Fill = new SolidColorBrush(Colors.DarkGreen);
                     passwordBox.Password = "";
                     marker++;
                     ticketCount.Content = "Количество электронных билетов:" + marker;
                     PassYes.Opacity = 100;
                     PassYes.Content = "Проезд разрешен";
+                    isBarCorrect = false;
                 }
                 else
                 {
@@ -69,13 +78,54 @@ namespace DayutBeri
 
         private void onLoad(object sender, RoutedEventArgs e)
         {
-            List<int> passwords = new List<int>();
-                for (int i = 0; i < 1000; i++)
+            
+                for (int i = 0; i < 10000; i++)
             {
-                passwords.Add(i);
+                passList.Add(i);
             }
             PassYes.Opacity = 0;
+            PingHost();
+            connectMarker.Fill = new SolidColorBrush(Colors.DarkRed);
             passwordBox.Focus();
+            if (connectionStatus!=0) { connectMarker.Fill = new SolidColorBrush(Colors.DarkGreen); } else { connectMarker.Fill = new SolidColorBrush(Colors.DarkRed); }
+        }
+        private void checker()
+        {
+            foreach (int n in passList)
+            {
+                if (passwordBox.Password == n.ToString())
+                {
+                    
+                    isBarCorrect = true;
+                    break;
+                }
+                else
+                {
+
+                    isBarCorrect = false;
+                    
+                }
+            }
+
+            
+        }
+        public static bool PingHost()
+        {
+            bool pingable = false;
+            Ping pinger = new Ping();
+            try
+            {
+                PingReply reply = pinger.Send("8.8.8.8");
+                pingable = reply.Status == IPStatus.Success;
+                connectionStatus++;
+
+
+            }
+            catch (PingException)
+            {
+                // Discard PingExceptions and return false;
+            }
+            return pingable;
         }
     }
 }

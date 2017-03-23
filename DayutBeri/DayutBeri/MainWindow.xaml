@@ -9,7 +9,7 @@
         WindowStyle="None" WindowState="Maximized" WindowStartupLocation="CenterOwner"
         Title="MainWindow" Height="720" Width="1280" TextInput="textInputed" KeyUp="_enterPressed" ResizeMode="NoResize" Loaded="onLoad">
     <Window.Background>
-        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
+        <SolidColorBrush Color="#FF6D6D6D"/>
     </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
@@ -20,9 +20,13 @@
         </Grid.RowDefinitions>
         <Rectangle Name ="rectangle" Fill="White" Margin="155,143,155,155" Grid.RowSpan="4" Stroke="Black" StrokeThickness="2"/>
         <Label x:Name="ticketCount" Content="Количество электронных билетов: " Margin="155,67,0,14.193" FontSize="26" HorizontalAlignment="Left" Width="516" Foreground="White"/>
-        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="3" Height="18" VerticalAlignment="Bottom" Width="6"/>
-        <Label x:Name="PassYes" Content="Label" Margin="552,84.8,550,0" Grid.Row="2" FontSize="72" Height="106" VerticalAlignment="Top" Foreground="White"/>
-        <Ellipse Fill="White" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="30"/>
+        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="3" Height="18" VerticalAlignment="Bottom" Width="6" Background="#FF6D6D6D"/>
+        <Label x:Name="PassYes" Content="" Margin="184,84.8,184,0" Grid.Row="2" FontSize="72" Height="106" VerticalAlignment="Top" Foreground="White">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
+        <Ellipse Name="connectMarker" Fill="White" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="30"/>
 
     </Grid>
 </Window>
