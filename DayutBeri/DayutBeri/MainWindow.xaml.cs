@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,14 +19,12 @@ using System.Threading;
 
 namespace DayutBeri
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
+   
     public partial class MainWindow : Window
     {
         bool isBarCorrect = false;
         StringBuilder sb = new StringBuilder();
-        List<int> passList = new List<int>();
+        List<String> passList = new List<String>();
         int marker = 0;
         static int connectionStatus = 0;
         bool pingable = false;
@@ -49,8 +48,9 @@ namespace DayutBeri
             if (e.Key == Key.Enter)
             {
                 checker();
+                Debug.Print(passList.Capacity.ToString()) ;
                 //Оттестировать почему нет перехода состояния.
-                //if (passwordBox.Password == "4606453849072") {
+                //if (passwordBox.Password == "4607009520018") {
                 if (isBarCorrect) { 
                 rectangle.Fill = new SolidColorBrush(Colors.DarkGreen);
                     passwordBox.Password = "";
@@ -81,8 +81,9 @@ namespace DayutBeri
             
                 for (int i = 0; i < 10000; i++)
             {
-                passList.Add(i);
+                passList.Add(i.ToString());
             }
+            passList.Add("4607009520018");
             PassYes.Opacity = 0;
             PingHost();
             connectMarker.Fill = new SolidColorBrush(Colors.DarkRed);
@@ -91,11 +92,11 @@ namespace DayutBeri
         }
         private void checker()
         {
-            foreach (int n in passList)
+            foreach (string n in passList)
             {
-                if (passwordBox.Password == n.ToString())
+                if (passwordBox.Password == n)
                 {
-                    
+                    passList.Remove(n);
                     isBarCorrect = true;
                     break;
                 }
