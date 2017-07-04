@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Net.Http;
+using System.Reflection.Emit;
 
 
 namespace DayutBeri
@@ -28,6 +32,7 @@ namespace DayutBeri
         int marker = 0;
         static int connectionStatus = 0;
         bool pingable = false;
+        private static HttpClient client = new HttpClient();
 
         public MainWindow()
         {
@@ -47,8 +52,7 @@ namespace DayutBeri
         {
             if (e.Key == Key.Enter)
             {
-                checker();
-                Debug.Print(passList.Capacity.ToString()) ;
+                checkerAsync();
                 //Оттестировать почему нет перехода состояния.
                 //if (passwordBox.Password == "4607009520018") {
                 if (isBarCorrect) { 
@@ -78,42 +82,58 @@ namespace DayutBeri
 
         private void onLoad(object sender, RoutedEventArgs e)
         {
-            
-                for (int i = 0; i < 10000; i++)
-            {
-                passList.Add(i.ToString());
-            }
-            passList.Add("4607009520018");
             PassYes.Opacity = 0;
-            PingHost();
+            PingHostAsync();
             connectMarker.Fill = new SolidColorBrush(Colors.DarkRed);
             passwordBox.Focus();
             if (connectionStatus!=0) { connectMarker.Fill = new SolidColorBrush(Colors.DarkGreen); } else { connectMarker.Fill = new SolidColorBrush(Colors.DarkRed); }
         }
-        private void checker()
+        private async Task checkerAsync()
         {
             foreach (string n in passList)
             {
                 if (passwordBox.Password == n)
                 {
-                    passList.Remove(n);
                     isBarCorrect = true;
+                    
+                    passList.Remove(n);
+                    try
+                    {
+                        var url = "http://ioc0kernel.s27.wh1.su/swap/useTicket";
+                        var content = n;
+                        using (WebClient wc = new WebClient())
+                        {
+                            var data = new NameValueCollection();
+                            data["number"] = n;
+                            await wc.UploadStringTaskAsync(url, content);
+                            await wc.UploadValuesTaskAsync(url, "POST", data);
+
+
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                       Debug.Print(e.ToString());
+                    }
+                    
+
                     break;
                 }
                 else
                 {
 
                     isBarCorrect = false;
-                    
+
                 }
             }
 
-            
+
         }
-        public static bool PingHost()
+        public  async Task<bool> PingHostAsync()
         {
             bool pingable = false;
             Ping pinger = new Ping();
+
             try
             {
                 PingReply reply = pinger.Send("8.8.8.8");
@@ -126,7 +146,27 @@ namespace DayutBeri
             {
                 // Discard PingExceptions and return false;
             }
+            if (pingable = true)
+            {
+                try
+                {
+                    var getresponce = await client.GetStringAsync("http://ioc0kernel.s27.wh1.su/swap/getTickets");
+                    string[] tickets = getresponce.Split(';');
+                    foreach (string ticket in tickets)
+                    {
+                        passList.Add(ticket);
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
             return pingable;
+           
+
         }
     }
 }
